@@ -1,3 +1,5 @@
+export const CITIES = "city";
+
 export const COLORS = [
   "#408CFF",
   "#EC7200",
