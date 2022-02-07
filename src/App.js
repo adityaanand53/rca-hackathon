@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles/App.css";
+import "./styles/App.scss";
 import LandingPage from "./components/LandingPage";
 import { Chart, registerables } from "chart.js";
 
