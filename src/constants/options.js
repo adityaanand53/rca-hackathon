@@ -1,5 +1,6 @@
 module.exports = {
   city: [
+    { value: "Total Votes", label: "Total Votes" },
     { value: "TOTAL OVERALL %", label: "Total Overall Percentage" },
     { value: "Total Venue Avg %", label: "Total Venue Average" },
     { value: "TOTAL TNS %", label: "Total TNS percentage" },

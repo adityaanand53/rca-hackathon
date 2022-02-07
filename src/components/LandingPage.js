@@ -8,7 +8,6 @@ const options = LoadOptions("city");
 function LandingPage() {
   const [data, setNewData] = useState(constructData(cityRCA, "Total Votes"));
   const changeOption = (key) => {
-    console.log(key);
     const newData = constructData(cityRCA, key);
     setNewData(newData);
   };
