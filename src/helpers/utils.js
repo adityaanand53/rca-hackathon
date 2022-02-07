@@ -1,14 +1,16 @@
-import { CITIES, COLORS } from "./../constants/constants";
-import options from "./../constants/options";
+import { CITIES, COLORS } from "../constants/constants";
+import * as options from "../constants/options";
+import BarChartContainer from "../components/BarChart";
+import DoughnutChartContainer from '../components/DoughnutChart';
 
 export function LoadOptions(entity) {
   let result;
   switch (entity) {
-    case CITIES:
-      result = options[CITIES];
-      break;
-    default:
-      result = options[CITIES];
+  case CITIES:
+    result = options[CITIES];
+    break;
+  default:
+    result = options[CITIES];
   }
   return result;
 }
@@ -26,4 +28,12 @@ export function constructData(arr, key) {
       },
     ],
   };
+}
+
+const charts = {
+  DoughnutChartContainer: DoughnutChartContainer,
+  BarChartContainer: BarChartContainer
+}
+export function getContainer(chartType) {
+  return charts[chartType];
 }
