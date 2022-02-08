@@ -39,9 +39,12 @@ function LandingPage() {
           options={chartTypeOptions}
           changeOption={changeChartTypeOption}
         />
-        <button className="add-button" onClick={addChart}>
+        <div className="filter-component">
+          <button className="add-button" onClick={addChart}>
           Add
-        </button>
+          </button>
+        </div>
+        
       </div>
 
       <div className="charts-container">

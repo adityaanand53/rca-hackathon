@@ -8,28 +8,24 @@
 }
 .add-button{
   box-sizing: border-box;
-  position: absolute;
-  top: 15%;
   color: white;
   border: none;
-  min-height: 30px;
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
   background-color: black;
-  min-width: 32px;
-  width: 100px;
 }
 
 .header-component{
-  padding: 30px;
-display: grid;
-grid-template-columns: auto auto;
-justify-content: center;
+width:500px;
+padding: 10px;
 }
 
 .filter-component{
-  width: 100px;
+  width: 200px;
+  padding:15px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .App-logo {
