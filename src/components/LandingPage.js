@@ -6,13 +6,14 @@ import BarChartContainer from "./BarChart";
 import DoughnutChartContainer from "./DoughnutChart";
 import Filters from "./Filters";
 import { LoadOptions, constructData, getContainer } from "../helpers/utils";
-import { chartTypeOptions } from "../constants/options";
+import { chartTypeOptions, votesOptions } from "../constants/options";
 const options = LoadOptions("city");
 
 function LandingPage() {
   let params = useParams();
   console.log(params);
   const [data, setNewData] = useState(constructData(cityRCA, "Total Votes"));
+  const [RCAData, setRCAData] = useState(cityRCA);
   const [chartType, setChartType] = useState("BarChartContainer");
   const [customCharts, setCustomCharts] = useState([]);
 
@@ -24,6 +25,16 @@ function LandingPage() {
   const changeChartTypeOption = (key) => {
     setChartType(key);
   };
+
+  const changeVotesOption = (val) => {
+    const isPlusInVal = val.charAt(val.length - 1) === "+";
+    const filteredVal = val.charAt(val.length - 1) === "+" ? +(val.substring(0, val.length - 1)) : +val;
+    let filteredCityRCA = cityRCA.filter((item) => {
+      return isPlusInVal ? item["Total Votes"] > filteredVal : item["Total Votes"] < filteredVal;
+    });
+    setNewData(constructData(filteredCityRCA, "Total Votes"));
+    setRCAData(filteredCityRCA);
+  }
 
   const addChart = () => {
     setCustomCharts([
@@ -40,15 +51,21 @@ function LandingPage() {
       <SideNav />
       <div className="landing-container">
         <div className="header-component">
-          <Filters options={options} changeOption={changeOption} />
-          <Filters
-            options={chartTypeOptions}
-            changeOption={changeChartTypeOption}
-          />
-          <div className="filter-component">
-            <button className="add-button" onClick={addChart}>
-              Add
-            </button>
+          <div className="left-header">
+            <Filters options={options} changeOption={changeOption} />
+            <Filters
+              options={chartTypeOptions}
+              changeOption={changeChartTypeOption}
+            />
+            <div className="filter-component">
+              <button className="add-button" onClick={addChart}>
+                Add
+              </button>
+            </div>
+          </div>
+          <div className="right-header">
+            <label> Filter by No. of Votes: </label>
+            <Filters options={votesOptions} changeOption={changeVotesOption} defaultValue={'Greater than 100'} />
           </div>
         </div>
 
@@ -59,22 +76,22 @@ function LandingPage() {
           })}
           <DoughnutChartContainer
             helpText="Number of votes per city"
-            dataSource={constructData(cityRCA, "Total Votes")}
+            dataSource={constructData(RCAData, "Total Votes")}
             header="Votes per city"
           ></DoughnutChartContainer>
           <BarChartContainer
             helpText="Rating based on Total Overall %"
-            dataSource={constructData(cityRCA, "TOTAL OVERALL %")}
+            dataSource={constructData(RCAData, "TOTAL OVERALL %")}
             header="Rating: Total Overall %"
           ></BarChartContainer>
           <BarChartContainer
             helpText="Rating based on Total Venue Avg %"
-            dataSource={constructData(cityRCA, "Total Venue Avg %")}
+            dataSource={constructData(RCAData, "Total Venue Avg %")}
             header="Rating: Total Venue Avg %"
           ></BarChartContainer>
           <BarChartContainer
             helpText="Rating based on Total Feedback %"
-            dataSource={constructData(cityRCA, "TOTAL TNS %")}
+            dataSource={constructData(RCAData, "TOTAL TNS %")}
             header="Rating: Total Feedback %"
           ></BarChartContainer>
         </div>

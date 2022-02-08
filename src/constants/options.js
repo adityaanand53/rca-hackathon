@@ -37,3 +37,10 @@ export const chartTypeOptions = [
     value: "BarChartContainer",
   },
 ];
+
+export const votesOptions = [
+  { label: "Less than 10", value: "10" },
+  { label: "Less than 50", value: "50" },
+  { label: "Less than 100", value: "100" },
+  { label: "Greater than 100", value: "100+" }
+];
