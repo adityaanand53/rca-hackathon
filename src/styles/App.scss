@@ -17,8 +17,20 @@
 }
 
 .header-component{
-width:500px;
-padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 10px;
+
+  .left-header {
+    display: flex;
+    max-width: 500px;
+  }
+
+  .right-header {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .sidenav{
