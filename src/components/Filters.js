@@ -11,7 +11,7 @@ function Filters(props) {
     changeOption(e.value);
   };
   return (
-    <div>
+    <div className="filter-component">
       <Select
         onChange={onChangeHandler}
         isSearchable={true}

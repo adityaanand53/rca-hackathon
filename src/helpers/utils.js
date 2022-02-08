@@ -1,7 +1,7 @@
 import { CITIES, COLORS } from "../constants/constants";
 import * as options from "../constants/options";
 import BarChartContainer from "../components/BarChart";
-import DoughnutChartContainer from '../components/DoughnutChart';
+import DoughnutChartContainer from "../components/DoughnutChart";
 
 export function LoadOptions(entity) {
   let result;
@@ -32,8 +32,8 @@ export function constructData(arr, key) {
 
 const charts = {
   DoughnutChartContainer: DoughnutChartContainer,
-  BarChartContainer: BarChartContainer
-}
+  BarChartContainer: BarChartContainer,
+};
 export function getContainer(chartType) {
   return charts[chartType];
 }

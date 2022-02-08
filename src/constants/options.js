@@ -27,10 +27,13 @@ export const city = [
   { value: "ratings-sightsAndScenery", label: "ratings-sightsAndScenery" },
 ];
 
-export const chartTypeOptions = [{
-  label: 'Doughnut',
-  value: 'DoughnutChartContainer'
-}, {
-  label: 'Bar',
-  value: 'BarChartContainer'
-}];
+export const chartTypeOptions = [
+  {
+    label: "Doughnut",
+    value: "DoughnutChartContainer",
+  },
+  {
+    label: "Bar",
+    value: "BarChartContainer",
+  },
+];

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import cityRCA from "./../constants/citydata.json";
 import BarChartContainer from "./BarChart";
-import DoughnutChartContainer from './DoughnutChart';
+import DoughnutChartContainer from "./DoughnutChart";
 import Filters from "./Filters";
 import { LoadOptions, constructData, getContainer } from "../helpers/utils";
-import { chartTypeOptions } from '../constants/options';
+import { chartTypeOptions } from "../constants/options";
 const options = LoadOptions("city");
 
 function LandingPage() {
   const [data, setNewData] = useState(constructData(cityRCA, "Total Votes"));
-  const [chartType, setChartType] = useState('BarChartContainer');
+  const [chartType, setChartType] = useState("BarChartContainer");
   const [customCharts, setCustomCharts] = useState([]);
 
   const changeOption = (key) => {
@@ -23,27 +23,31 @@ function LandingPage() {
 
   const addChart = () => {
     setCustomCharts([
-      {  
+      {
         chartType,
-        data
+        data,
       },
-      ...customCharts
-    ])
-  }
+      ...customCharts,
+    ]);
+  };
 
   return (
     <React.Fragment>
-      <Filters options={options} changeOption={changeOption} />
-      <Filters options={chartTypeOptions} changeOption={changeChartTypeOption} />
-      <button onClick={addChart}>Add</button>
-     
-      <div className="charts-container"> 
+      <div className="header-component">
+        <Filters options={options} changeOption={changeOption} />
+        <Filters
+          options={chartTypeOptions}
+          changeOption={changeChartTypeOption}
+        />
+        <button className="add-button" onClick={addChart}>
+          Add
+        </button>
+      </div>
+
+      <div className="charts-container">
         {customCharts.map((cChart, i) => {
           const Container = getContainer(cChart.chartType);
-          return <Container
-            key={i}
-            dataSource={ cChart.data}
-          ></Container>
+          return <Container key={i} dataSource={cChart.data}></Container>;
         })}
         <DoughnutChartContainer
           helpText="Number of votes per city"
@@ -66,7 +70,6 @@ function LandingPage() {
           header="Rating: Total Feedback %"
         ></BarChartContainer>
       </div>
-     
     </React.Fragment>
   );
 }
