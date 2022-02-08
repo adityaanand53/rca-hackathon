@@ -21,6 +21,16 @@ width:500px;
 padding: 10px;
 }
 
+.sidenav{
+  height: 100%;  width: 10%;  position: fixed; z-index: 1; top: 0; left: 0; background-color:#232323; transition: .5s ease; overflow-x: hidden; padding-top: 20px; display: flex; flex-direction: column; align-items: center;
+}
+
+.landing-container{
+  position: relative;
+left:100px;
+display: inline-block;
+}
+
 .filter-component{
   width: 200px;
   padding:15px;
