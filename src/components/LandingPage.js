@@ -1,24 +1,22 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import cityRCA from "./../constants/citydata.json";
 import SideNav from "./SideNav";
 import BarChartContainer from "./BarChart";
 import DoughnutChartContainer from "./DoughnutChart";
 import Filters from "./Filters";
-import { LoadOptions, constructData, getContainer } from "../helpers/utils";
+import { loadOptions, constructData, getContainer, getRCAData } from "../helpers/utils";
 import { chartTypeOptions, votesOptions } from "../constants/options";
-const options = LoadOptions("city");
 
 function LandingPage() {
   let params = useParams();
-  console.log(params);
-  const [data, setNewData] = useState(constructData(cityRCA, "Total Votes"));
-  const [RCAData, setRCAData] = useState(cityRCA);
+  const options = loadOptions(params.entity);
+  const [RCAData, setRCAData] = useState(getRCAData(params.entity));
+  const [data, setNewData] = useState(constructData(RCAData, "Total Votes"));
   const [chartType, setChartType] = useState("BarChartContainer");
   const [customCharts, setCustomCharts] = useState([]);
 
   const changeOption = (key) => {
-    const newData = constructData(cityRCA, key);
+    const newData = constructData(RCAData, key);
     setNewData(newData);
   };
 
@@ -29,7 +27,7 @@ function LandingPage() {
   const changeVotesOption = (val) => {
     const isPlusInVal = val.charAt(val.length - 1) === "+";
     const filteredVal = val.charAt(val.length - 1) === "+" ? +(val.substring(0, val.length - 1)) : +val;
-    let filteredCityRCA = cityRCA.filter((item) => {
+    let filteredCityRCA = RCAData.filter((item) => {
       return isPlusInVal ? item["Total Votes"] > filteredVal : item["Total Votes"] < filteredVal;
     });
     setNewData(constructData(filteredCityRCA, "Total Votes"));
