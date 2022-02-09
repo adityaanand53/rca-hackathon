@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import cityRCA from "./../constants/citydata.json";
 import SideNav from "./SideNav";
@@ -15,11 +15,64 @@ function LandingPage() {
   const [data, setNewData] = useState(constructData(cityRCA, "Total Votes"));
   const [RCAData, setRCAData] = useState(cityRCA);
   const [chartType, setChartType] = useState("BarChartContainer");
+  const [chartHeaderText, setChartHeaderText] = useState("");
   const [customCharts, setCustomCharts] = useState([]);
+  const [highestVotes, setHighestVotes] = useState(cityRCA[0]["Total Votes"]);
+  const [highestVotesCity, setHighestVotesCity] = useState(cityRCA[0]["city"]);
+  const [highestOverall, setHighestOverall] = useState(cityRCA[0]["TOTAL OVERALL %"]);
+  const [highestOverallCity, setHighestOverallCity] = useState(cityRCA[0]["city"]);
+  const [highestVenueAvg, setHighestVenueAvg] = useState(cityRCA[0]["Total Venue Avg %"]);
+  const [highestVenueAvgCity, setHighestVenueAvgCity] = useState(cityRCA[0]["city"]);
+
+  useEffect(() => {
+    getHighestVotes();
+    getHighestOverall();
+    getHighestVenueAvg();
+  }, []);
+
+  const getHighestVotes = () => {
+    let maxVotes = highestVotes;
+    let maxVotesCity = highestVotesCity;
+    for (let i=1; i < cityRCA.length; i++) {
+      if (cityRCA[i]["Total Votes"] > maxVotes) {
+        maxVotes = cityRCA[i]["Total Votes"];
+        maxVotesCity = cityRCA[i]["city"];
+      }
+    }
+    setHighestVotes(maxVotes);
+    setHighestVotesCity(maxVotesCity);
+  }
+
+  const getHighestOverall = () => {
+    let maxOverall = highestOverall;
+    let maxOverallCity = highestOverallCity;
+    for (let i=1; i < cityRCA.length; i++) {
+      if (cityRCA[i]["Total Overall"] > maxOverall) {
+        maxOverall = cityRCA[i]["Total Overall"];
+        maxOverallCity = cityRCA[i]["city"];
+      }
+    }
+    setHighestOverall(maxOverall);
+    setHighestOverallCity(maxOverallCity);
+  }
+
+  const getHighestVenueAvg = () => {
+    let maxVenueAvg = highestVenueAvg;
+    let maxVenueAvgCity = highestVenueAvgCity;
+    for (let i=1; i < cityRCA.length; i++) {
+      if (cityRCA[i]["Total VenueAvg"] > maxVenueAvg) {
+        maxVenueAvg = cityRCA[i]["Total VenueAvg"];
+        maxVenueAvgCity = cityRCA[i]["city"];
+      }
+    }
+    setHighestVenueAvg(maxVenueAvg);
+    setHighestVenueAvgCity(maxVenueAvgCity);
+  }
 
   const changeOption = (key) => {
     const newData = constructData(cityRCA, key);
     setNewData(newData);
+    setChartHeaderText(key);
   };
 
   const changeChartTypeOption = (key) => {
@@ -41,6 +94,7 @@ function LandingPage() {
       {
         chartType,
         data,
+        chartHeaderText
       },
       ...customCharts,
     ]);
@@ -68,11 +122,29 @@ function LandingPage() {
             <Filters options={votesOptions} changeOption={changeVotesOption} defaultValue={'Greater than 100'} />
           </div>
         </div>
+        <div className="content-container">
+          <div className="high-votes-content">
+            <div className="highest-votes">{highestVotes}</div>
+            <div className="highest-votes-city">{highestVotesCity}</div>
+            <div className="highest-votes-text">Highest Votes</div>
+          </div>
 
+          <div className="high-votes-content">
+            <div className="highest-votes">{highestOverall}</div>
+            <div className="highest-votes-city">{highestOverallCity}</div>
+            <div className="highest-votes-text">Highest Overall %</div>
+          </div>
+
+          <div className="high-votes-content">
+            <div className="highest-votes">{highestVenueAvg}</div>
+            <div className="highest-votes-city">{highestVenueAvgCity}</div>
+            <div className="highest-votes-text">Highest Venue Avg %</div>
+          </div>
+        </div>
         <div className="charts-container">
           {customCharts.map((cChart, i) => {
             const Container = getContainer(cChart.chartType);
-            return <Container key={i} dataSource={cChart.data}></Container>;
+            return <Container key={i} dataSource={cChart.data} header={cChart.chartHeaderText}></Container>;
           })}
           <DoughnutChartContainer
             helpText="Number of votes per city"
