@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const SideNav = () => {
   return (
     <nav className="sidenav">
-      <Link to="/city">City</Link>
-      <Link to="/islands">Islands</Link>
+      <Link className="navlinks" to="/city">City</Link>
+      <Link className="navlinks" to="/islands">Islands</Link>
     </nav>
   );
 };
