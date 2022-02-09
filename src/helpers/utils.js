@@ -18,7 +18,7 @@ export function loadOptions(entity) {
 
 export function constructData(arr, key, label) {
   return {
-    labels: arr.map((c) => label ? c[label] : c[Object.keys(c)[0]]),
+    labels: arr.map((c) => (label ? c[label] : c[Object.keys(c)[0]])),
     datasets: [
       {
         label: key,
@@ -31,13 +31,13 @@ export function constructData(arr, key, label) {
   };
 }
 
-export function getRCAData(entity){
+export function getRCAData(entity) {
   let result;
   switch (entity) {
   case CITIES:
     result = cityRCA;
     break;
-  default: 
+  default:
     result = cityRCA;
     return result;
   }

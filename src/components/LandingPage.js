@@ -4,7 +4,12 @@ import SideNav from "./SideNav";
 import BarChartContainer from "./BarChart";
 import DoughnutChartContainer from "./DoughnutChart";
 import Filters from "./Filters";
-import { loadOptions, constructData, getContainer, getRCAData } from "../helpers/utils";
+import {
+  loadOptions,
+  constructData,
+  getContainer,
+  getRCAData,
+} from "../helpers/utils";
 import { chartTypeOptions, votesOptions } from "../constants/options";
 
 function LandingPage() {
@@ -26,13 +31,19 @@ function LandingPage() {
 
   const changeVotesOption = (val) => {
     const isPlusInVal = val.charAt(val.length - 1) === "+";
-    const filteredVal = val.charAt(val.length - 1) === "+" ? +(val.substring(0, val.length - 1)) : +val;
-    let filteredCityRCA = RCAData.filter((item) => {
-      return isPlusInVal ? item["Total Votes"] > filteredVal : item["Total Votes"] < filteredVal;
+    const filteredVal =
+      val.charAt(val.length - 1) === "+"
+        ? +val.substring(0, val.length - 1)
+        : +val;
+    const rcaDataToFilter = getRCAData(params.entity);
+    let filteredCityRCA = rcaDataToFilter.filter((item) => {
+      return isPlusInVal
+        ? item["Total Votes"] > filteredVal
+        : item["Total Votes"] < filteredVal;
     });
     setNewData(constructData(filteredCityRCA, "Total Votes"));
     setRCAData(filteredCityRCA);
-  }
+  };
 
   const addChart = () => {
     setCustomCharts([
@@ -63,7 +74,11 @@ function LandingPage() {
           </div>
           <div className="right-header">
             <label> Filter by No. of Votes: </label>
-            <Filters options={votesOptions} changeOption={changeVotesOption} defaultValue={'Greater than 100'} />
+            <Filters
+              options={votesOptions}
+              changeOption={changeVotesOption}
+              defaultValue={"Greater than 100"}
+            />
           </div>
         </div>
 
