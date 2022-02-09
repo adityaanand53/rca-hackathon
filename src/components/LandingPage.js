@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import cityRCA from "./../constants/citydata.json";
 import SideNav from "./SideNav";
 import BarChartContainer from "./BarChart";
 import DoughnutChartContainer from "./DoughnutChart";
