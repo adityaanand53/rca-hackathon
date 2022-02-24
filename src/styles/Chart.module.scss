@@ -1,10 +1,11 @@
 .canvasContainer {
   margin-top: auto;
   margin-bottom: auto;
-  width: 45vw;
+  width: 42vw;
   padding: 10px;
-  &:first-child {
+  &:nth-child(odd) {
     border-right: 1px solid #bbb;
+    padding-top: 40px;
   }
 }
 .chartControls {

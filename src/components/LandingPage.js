@@ -1,5 +1,8 @@
+/* eslint-disable indent */
 import React, { useEffect, useState } from "react";
+import { JsonToExcel } from "react-json-excel";
 import { useParams } from "react-router-dom";
+
 import cityRCA from "./../constants/citydata.json";
 import SideNav from "./SideNav";
 import BarChartContainer from "./BarChart";
@@ -11,7 +14,12 @@ import {
   getContainer,
   getRCAData,
 } from "../helpers/utils";
-import { chartTypeOptions, votesOptions } from "../constants/options";
+import { chartTypeOptions, votesOptions, city } from "../constants/options";
+
+const columns = { city: "City", state: "State", country: "Country" };
+city.forEach((c) => {
+  columns[c.value] = c.label;
+});
 
 function LandingPage() {
   let params = useParams();
@@ -23,21 +31,30 @@ function LandingPage() {
   const [customCharts, setCustomCharts] = useState([]);
   const [highestVotes, setHighestVotes] = useState(cityRCA[0]["Total Votes"]);
   const [highestVotesCity, setHighestVotesCity] = useState(cityRCA[0]["city"]);
-  const [highestOverall, setHighestOverall] = useState(cityRCA[0]["TOTAL OVERALL %"]);
-  const [highestOverallCity, setHighestOverallCity] = useState(cityRCA[0]["city"]);
-  const [highestVenueAvg, setHighestVenueAvg] = useState(cityRCA[0]["Total Venue Avg %"]);
-  const [highestVenueAvgCity, setHighestVenueAvgCity] = useState(cityRCA[0]["city"]);
+  const [highestOverall, setHighestOverall] = useState(
+    cityRCA[0]["TOTAL OVERALL %"]
+  );
+  const [highestOverallCity, setHighestOverallCity] = useState(
+    cityRCA[0]["city"]
+  );
+  const [highestVenueAvg, setHighestVenueAvg] = useState(
+    cityRCA[0]["Total Venue Avg %"]
+  );
+  const [highestVenueAvgCity, setHighestVenueAvgCity] = useState(
+    cityRCA[0]["city"]
+  );
 
   useEffect(() => {
     getHighestVotes();
     getHighestOverall();
     getHighestVenueAvg();
+    changeVotesOption("100+");
   }, []);
 
   const getHighestVotes = () => {
     let maxVotes = highestVotes;
     let maxVotesCity = highestVotesCity;
-    for (let i=1; i < cityRCA.length; i++) {
+    for (let i = 1; i < cityRCA.length; i++) {
       if (cityRCA[i]["Total Votes"] > maxVotes) {
         maxVotes = cityRCA[i]["Total Votes"];
         maxVotesCity = cityRCA[i]["city"];
@@ -45,12 +62,12 @@ function LandingPage() {
     }
     setHighestVotes(maxVotes);
     setHighestVotesCity(maxVotesCity);
-  }
+  };
 
   const getHighestOverall = () => {
     let maxOverall = highestOverall;
     let maxOverallCity = highestOverallCity;
-    for (let i=1; i < cityRCA.length; i++) {
+    for (let i = 1; i < cityRCA.length; i++) {
       if (cityRCA[i]["Total Overall"] > maxOverall) {
         maxOverall = cityRCA[i]["Total Overall"];
         maxOverallCity = cityRCA[i]["city"];
@@ -58,12 +75,12 @@ function LandingPage() {
     }
     setHighestOverall(maxOverall);
     setHighestOverallCity(maxOverallCity);
-  }
+  };
 
   const getHighestVenueAvg = () => {
     let maxVenueAvg = highestVenueAvg;
     let maxVenueAvgCity = highestVenueAvgCity;
-    for (let i=1; i < cityRCA.length; i++) {
+    for (let i = 1; i < cityRCA.length; i++) {
       if (cityRCA[i]["Total VenueAvg"] > maxVenueAvg) {
         maxVenueAvg = cityRCA[i]["Total VenueAvg"];
         maxVenueAvgCity = cityRCA[i]["city"];
@@ -71,7 +88,7 @@ function LandingPage() {
     }
     setHighestVenueAvg(maxVenueAvg);
     setHighestVenueAvgCity(maxVenueAvgCity);
-  }
+  };
 
   const changeOption = (key) => {
     const newData = constructData(RCAData, key);
@@ -90,13 +107,22 @@ function LandingPage() {
         ? +val.substring(0, val.length - 1)
         : +val;
     const rcaDataToFilter = getRCAData(params.entity);
-    let filteredCityRCA = rcaDataToFilter.filter((item) => {
-      return isPlusInVal
-        ? item["Total Votes"] > filteredVal
-        : item["Total Votes"] < filteredVal;
-    });
-    setNewData(constructData(filteredCityRCA, "Total Votes"));
+    let filteredCityRCA = filteredVal
+      ? rcaDataToFilter.filter((item) => {
+          return isPlusInVal
+            ? item["Total Votes"] > filteredVal
+            : item["Total Votes"] < filteredVal;
+        })
+      : rcaDataToFilter;
+    // setNewData(constructData(filteredCityRCA, "Total Votes"));
+
     setRCAData(filteredCityRCA);
+    const updatedChart = customCharts.map((chart) => {
+      const newRCAData = constructData(filteredCityRCA, chart.chartHeaderText);
+      chart.data = newRCAData;
+      return chart;
+    });
+    setCustomCharts(updatedChart);
   };
 
   const addChart = () => {
@@ -104,7 +130,7 @@ function LandingPage() {
       {
         chartType,
         data,
-        chartHeaderText
+        chartHeaderText,
       },
       ...customCharts,
     ]);
@@ -116,14 +142,19 @@ function LandingPage() {
       <div className="landing-container">
         <div className="header-component">
           <div className="left-header">
-            <Filters options={options} changeOption={changeOption} />
+            <Filters
+              options={options}
+              changeOption={changeOption}
+              placeholder="Select variable"
+            />
             <Filters
               options={chartTypeOptions}
               changeOption={changeChartTypeOption}
+              placeholder="Select chart type"
             />
             <div className="filter-component">
               <button className="add-button" onClick={addChart}>
-                Add
+                Plot new chart
               </button>
             </div>
           </div>
@@ -132,33 +163,49 @@ function LandingPage() {
             <Filters
               options={votesOptions}
               changeOption={changeVotesOption}
-              defaultValue={"Greater than 100"}
+              defaultValue={{ label: "Greater than 100", value: "100+" }}
+            />
+            <JsonToExcel
+              data={RCAData}
+              className="add-button"
+              filename="RCA_Export"
+              fields={columns}
+              text="Export to excel"
             />
           </div>
         </div>
         <div className="content-container">
           <div className="high-votes-content">
+            <div className="highest-votes-text">Highest Votes</div>
+
             <div className="highest-votes">{highestVotes}</div>
             <div className="highest-votes-city">{highestVotesCity}</div>
-            <div className="highest-votes-text">Highest Votes</div>
           </div>
 
           <div className="high-votes-content">
+            <div className="highest-votes-text">Highest Overall %</div>
+
             <div className="highest-votes">{highestOverall}</div>
             <div className="highest-votes-city">{highestOverallCity}</div>
-            <div className="highest-votes-text">Highest Overall %</div>
           </div>
 
           <div className="high-votes-content">
+            <div className="highest-votes-text">Highest Venue Avg %</div>
+
             <div className="highest-votes">{highestVenueAvg}</div>
             <div className="highest-votes-city">{highestVenueAvgCity}</div>
-            <div className="highest-votes-text">Highest Venue Avg %</div>
           </div>
         </div>
         <div className="charts-container">
           {customCharts.map((cChart, i) => {
             const Container = getContainer(cChart.chartType);
-            return <Container key={i} dataSource={cChart.data} header={cChart.chartHeaderText}></Container>;
+            return (
+              <Container
+                key={i}
+                dataSource={cChart.data}
+                header={cChart.chartHeaderText}
+              ></Container>
+            );
           })}
           <DoughnutChartContainer
             helpText="Number of votes per city"

@@ -5,7 +5,7 @@ import React from "react";
 import Select from "react-select";
 
 function Filters(props) {
-  const { changeOption, options } = props;
+  const { changeOption, options, defaultValue, placeholder } = props;
   const optionsData = options;
   const onChangeHandler = function (e) {
     changeOption(e.value);
@@ -16,6 +16,8 @@ function Filters(props) {
         onChange={onChangeHandler}
         isSearchable={true}
         options={optionsData}
+        defaultValue={defaultValue}
+        placeholder={placeholder}
       />
     </div>
   );
@@ -24,6 +26,8 @@ function Filters(props) {
 Filters.propTypes = {
   changeOption: PropTypes.func,
   options: PropTypes.array,
+  defaultValue: PropTypes.object,
+  placeholder: PropTypes.string,
 };
 
 Filters.displayName = "Filters";

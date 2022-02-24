@@ -39,6 +39,7 @@ export const chartTypeOptions = [
 ];
 
 export const votesOptions = [
+  { label: "All", value: "" },
   { label: "Less than 10", value: "10" },
   { label: "Less than 50", value: "50" },
   { label: "Less than 100", value: "100" },
