@@ -43,51 +43,67 @@ function LandingPage() {
   const [highestVenueAvgCity, setHighestVenueAvgCity] = useState(
     cityRCA[0]["city"]
   );
+  const [highestFeedbackAvg, setHighestFeedbackAvg] = useState(
+    cityRCA[0]["Total TNS %"]
+  );
+  const [highestFeedbackAvgCity, setHighestFeedbackAvgCity] = useState(
+    cityRCA[0]["city"]
+  );
 
   useEffect(() => {
-    getHighestVotes();
-    getHighestOverall();
-    getHighestVenueAvg();
     changeVotesOption("100+");
   }, []);
 
-  const getHighestVotes = () => {
-    let maxVotes = highestVotes;
-    let maxVotesCity = highestVotesCity;
-    for (let i = 1; i < cityRCA.length; i++) {
-      if (cityRCA[i]["Total Votes"] > maxVotes) {
-        maxVotes = cityRCA[i]["Total Votes"];
-        maxVotesCity = cityRCA[i]["city"];
+  const getHighestVotes = (filteredData) => {
+    let maxVotes = filteredData[0]["Total Votes"];
+    let maxVotesCity = filteredData[0]["city"];
+    for (let i = 1; i < filteredData.length; i++) {
+      if (filteredData[i]["Total Votes"] > maxVotes) {
+        maxVotes = filteredData[i]["Total Votes"];
+        maxVotesCity = filteredData[i]["city"];
       }
     }
     setHighestVotes(maxVotes);
     setHighestVotesCity(maxVotesCity);
   };
 
-  const getHighestOverall = () => {
-    let maxOverall = highestOverall;
-    let maxOverallCity = highestOverallCity;
-    for (let i = 1; i < cityRCA.length; i++) {
-      if (cityRCA[i]["Total Overall"] > maxOverall) {
-        maxOverall = cityRCA[i]["Total Overall"];
-        maxOverallCity = cityRCA[i]["city"];
+  const getHighestOverall = (filteredData) => {
+    let maxOverall = filteredData[0]["TOTAL OVERALL %"];
+    let maxOverallCity = filteredData[0]["city"];
+    for (let i = 1; i < filteredData.length; i++) {
+      if (filteredData[i]["TOTAL OVERALL %"] > maxOverall) {
+        maxOverall = filteredData[i]["TOTAL OVERALL %"];
+        maxOverallCity = filteredData[i]["city"];
       }
     }
     setHighestOverall(maxOverall);
     setHighestOverallCity(maxOverallCity);
   };
 
-  const getHighestVenueAvg = () => {
-    let maxVenueAvg = highestVenueAvg;
-    let maxVenueAvgCity = highestVenueAvgCity;
-    for (let i = 1; i < cityRCA.length; i++) {
-      if (cityRCA[i]["Total VenueAvg"] > maxVenueAvg) {
-        maxVenueAvg = cityRCA[i]["Total VenueAvg"];
-        maxVenueAvgCity = cityRCA[i]["city"];
+  const getHighestVenueAvg = (filteredData) => {
+    let maxVenueAvg = filteredData[0]["Total Venue Avg %"];
+    let maxVenueAvgCity = filteredData[0]["city"];
+    for (let i = 1; i < filteredData.length; i++) {
+      if (filteredData[i]["Total Venue Avg %"] > maxVenueAvg) {
+        maxVenueAvg = filteredData[i]["Total Venue Avg %"];
+        maxVenueAvgCity = filteredData[i]["city"];
       }
     }
     setHighestVenueAvg(maxVenueAvg);
     setHighestVenueAvgCity(maxVenueAvgCity);
+  };
+
+  const getHighestFeedbackAvg = (filteredData) => {
+    let maxVenueAvg = filteredData[0]["TOTAL TNS %"];
+    let maxVenueAvgCity = filteredData[0]["city"];
+    for (let i = 1; i < filteredData.length; i++) {
+      if (filteredData[i]["TOTAL TNS %"] > maxVenueAvg) {
+        maxVenueAvg = filteredData[i]["TOTAL TNS %"];
+        maxVenueAvgCity = filteredData[i]["city"];
+      }
+    }
+    setHighestFeedbackAvg(maxVenueAvg);
+    setHighestFeedbackAvgCity(maxVenueAvgCity);
   };
 
   const changeOption = (key) => {
@@ -117,6 +133,10 @@ function LandingPage() {
     // setNewData(constructData(filteredCityRCA, "Total Votes"));
 
     setRCAData(filteredCityRCA);
+    getHighestVotes(filteredCityRCA);
+    getHighestOverall(filteredCityRCA);
+    getHighestVenueAvg(filteredCityRCA);
+    getHighestFeedbackAvg(filteredCityRCA);
     const updatedChart = customCharts.map((chart) => {
       const newRCAData = constructData(filteredCityRCA, chart.chartHeaderText);
       chart.data = newRCAData;
@@ -183,17 +203,21 @@ function LandingPage() {
           </div>
 
           <div className="high-votes-content">
-            <div className="highest-votes-text">Highest Overall %</div>
-
+            <div className="highest-votes-text">Best Overall %</div>
             <div className="highest-votes">{highestOverall}</div>
             <div className="highest-votes-city">{highestOverallCity}</div>
           </div>
 
           <div className="high-votes-content">
-            <div className="highest-votes-text">Highest Venue Avg %</div>
-
+            <div className="highest-votes-text">Best Ratings %</div>
             <div className="highest-votes">{highestVenueAvg}</div>
             <div className="highest-votes-city">{highestVenueAvgCity}</div>
+          </div>
+
+          <div className="high-votes-content">
+            <div className="highest-votes-text">Best Feedback %</div>
+            <div className="highest-votes">{highestFeedbackAvg}</div>
+            <div className="highest-votes-city">{highestFeedbackAvgCity}</div>
           </div>
         </div>
         <div className="charts-container">

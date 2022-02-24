@@ -5,26 +5,26 @@ export const city = [
   { value: "TOTAL TNS %", label: "Total TNS percentage" },
   {
     value: "Advance Booking - FourToSixMonths",
-    label: "Advance Booking - FourToSixMonths",
+    label: "Advance Booking - Four To Six Months",
   },
   {
     value: "Advance Booking - OnePlusYear",
-    label: "Advance Booking - OnePlusYear",
+    label: "Advance Booking - One Plus Year",
   },
   {
     value: "Advance Booking - SevenToTwelveMonths",
-    label: "Advance Booking - SevenToTwelveMonths",
+    label: "Advance Booking - Seven To Twelve Months",
   },
   {
     value: "Advance Booking - ThreeMonths",
-    label: "Advance Booking - ThreeMonths",
+    label: "Advance Booking - Three Months",
   },
-  { value: "ratings-artsAndCulture", label: "ratings-artsAndCulture" },
-  { value: "ratings-food", label: "ratings-food" },
-  { value: "ratings-friendliness", label: "ratings-friendliness" },
-  { value: "ratings-publicTransport", label: "ratings-publicTransport" },
-  { value: "ratings-shopping", label: "ratings-shopping" },
-  { value: "ratings-sightsAndScenery", label: "ratings-sightsAndScenery" },
+  { value: "ratings-artsAndCulture", label: "Ratings Arts & Culture" },
+  { value: "ratings-food", label: "Ratings Food" },
+  { value: "ratings-friendliness", label: "Ratings Friendliness" },
+  { value: "ratings-publicTransport", label: "Ratings Public Transport" },
+  { value: "ratings-shopping", label: "Ratings Shopping" },
+  { value: "ratings-sightsAndScenery", label: "Ratings Sights & Scenery" },
 ];
 
 export const chartTypeOptions = [
